@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using HMS.Domain.Enums;
 
 namespace HMS.Domain.Entities;
@@ -8,22 +9,29 @@ public class Appointment
     [Key]
     public int AppointmentId { get; set; }
 
-    [Required]
-    public int PatientId { get; set; }
+    [Required, StringLength(100)]
+    public string DoctorId { get; set; } = null!;
 
-    [Required]
-    public int DoctorId { get; set; }
+    [ForeignKey("DoctorId")]
+    public Doctor Doctor { get; set; } = null!;
 
+    [Required, StringLength(100)]
+    public string PatientId { get; set; } = null!;
+
+    [ForeignKey("PatientId")]
+    public Patient Patient { get; set; } = null!;
+
+    [DataType(DataType.DateTime)]
     public DateTime AppointmentDate { get; set; }
 
-    [Required]
+    [Column(TypeName = "time")]
+    public TimeSpan SlotStart { get; set; }
+
+    [Column(TypeName = "time")]
+    public TimeSpan SlotEnd { get; set; }
+
     public AppointmentStatus Status { get; set; }
 
-    public DateTime CreatedAt { get; set; }
-
     // Navigation
-    // one-to-one
-    public Patient Patient { get; set; } = null!;
-    public Doctor Doctor { get; set; } = null!;
     public MedicalRecord? MedicalRecord { get; set; }
 }

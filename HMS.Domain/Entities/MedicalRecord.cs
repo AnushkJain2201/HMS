@@ -6,26 +6,32 @@ namespace HMS.Domain.Entities;
 public class MedicalRecord
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int RecordId { get; set; }
+    public int MedicalRecordId { get; set; }
 
-    [Required]
-    public int PatientId { get; set; }
+    [Required, StringLength(100)]
+    public string PatientId { get; set; } = null!;
 
-    [Required]
-    public int DoctorId { get; set; }
+    [ForeignKey("PatientId")]
+    public Patient Patient { get; set; } = null!;
+
+    [Required, StringLength(100)]
+    public string DoctorId { get; set; } = null!;
+
+    [ForeignKey("DoctorId")]
+    public Doctor Doctor { get; set; } = null!;
 
     [Required]
     public int AppointmentId { get; set; }
 
-    public string Diagnosis { get; set; } = null!;
-    public string Prescription { get; set; } = null!;
-    public string Notes { get; set; } = null!;
-    public DateTime RecordDate { get; set; }
-
-    // Navigation Properties
-    // one-to-one
-    public Patient Patient { get; set; } = null!;
-    public Doctor Doctor { get; set; } = null!;
+    [ForeignKey("AppointmentId")]
     public Appointment Appointment { get; set; } = null!;
+
+    [Required]
+    public string Diagnosis { get; set; } = null!;
+
+    public string? Prescription { get; set; }
+
+    public string? Notes { get; set; }
+
+    public DateTime RecordDate { get; set; }
 }

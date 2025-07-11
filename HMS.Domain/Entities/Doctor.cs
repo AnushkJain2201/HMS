@@ -5,24 +5,43 @@ namespace HMS.Domain.Entities;
 
 public class Doctor
 {
-    [Key, ForeignKey("User")]
-    public int DoctorId { get; set; }
+    [Key]
+    [StringLength(100)]
+    [ForeignKey("User")]
+    public string DoctorId { get; set; } = null!;
 
-    [MaxLength(200)] 
-    public string Bio { get; set; } = null!;
-    
-    [MaxLength(100)]
-    public string Department { get; set; } = null!;
+    [Required, StringLength(100)]
+    public string FullName { get; set; } = null!;
 
-    public bool Availability { get; set; }
+    [StringLength(200)]
+    public string? Bio { get; set; }
 
-    [MaxLength(100)] 
-    public string Qualification { get; set; } = null!;
-    
+    [StringLength(100)]
+    public string? Department { get; set; }
+
+    public bool Available { get; set; }
+
+    public bool IsApproved { get; set; }
+
+    [Column(TypeName = "time")]
+    public TimeSpan WorkStart { get; set; }
+
+    [Column(TypeName = "time")]
+    public TimeSpan WorkEnd { get; set; }
+
+    [StringLength(100)]
+    public string? Qualification { get; set; }
+
+    [Required, StringLength(100)]
+    public string Email { get; set; } = null!;
+
+    [Required, StringLength(13)]
+    public string ContactNum { get; set; } = null!;
+
     public int ExperienceYears { get; set; }
 
     public int AppointmentsDone { get; set; }
-    
+
     // Navigation Properties
     // one-to-one
     public User User { get; set; } = null!;
